@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16
+    container_name: expense_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: expense_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: backend.dockerfile
+    container_name: expense_backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: "postgresql://admin:admin@db:5432/expense_tracker?schema=public"
+      PORT: 4000
+    volumes:
+      - ./backend:/app
+    command: ["npm", "run", "dev"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: frontend.dockerfile
+    container_name: expense_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    command: ["npm", "run", "host"]
+
+volumes:
+  postgres_data:
