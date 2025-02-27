@@ -1,8 +1,12 @@
-import { Response } from "express";
+class AppError extends Error {
+  statusCode: number;
 
-const handleHttp = (res: Response, error: string, errorRaw?: any) => {
-  res.status(500);
-  res.send({ error });
-};
+  constructor(message: string, statusCode: number = 500) {
+    super(message);
+    this.statusCode = statusCode;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
 
-export { handleHttp };
+export default AppError;
+

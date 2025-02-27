@@ -1,26 +1,24 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { registerNewUser, login } from "@/services/auth";
-import { handleHttp } from "@/utils/error-handler";
 
-const registerController = async ({ body }: Request, res: Response) => {
+const registerController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = registerNewUser(body);
-
-    res.send(user);
-  } catch (e) {
-    handleHttp(res.status(500), "ERROR_REGISTER_USER", e);
+    const user = await registerNewUser(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    next(error);
   }
 };
 
-const loginController = async (req: Request, res: Response) => {
+const loginController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
     const user = await login({ email, password });
-
-    res.send(user);
-  } catch (e) {
-    handleHttp(res.status(500), "ERROR_LOGIN_USER", e);
+    res.json(user);
+  } catch (error) {
+    next(error);
   }
 };
 
 export { registerController, loginController };
+

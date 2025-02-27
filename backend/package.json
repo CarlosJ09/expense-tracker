@@ -1,5 +1,5 @@
 {
-  "name": "chatbot",
+  "name": "expense-tracker",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.1.0",
+    "@prisma/adapter-pg": "^6.4.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -20,7 +21,6 @@
     "pg": "^8.13.3"
   },
   "devDependencies": {
-    "@prisma/adapter-pg": "^6.4.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
