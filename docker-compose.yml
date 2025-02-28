@@ -25,6 +25,7 @@ services:
     environment:
       DATABASE_URL: "postgresql://admin:admin@db:5432/expense_tracker?schema=public"
       PORT: 4000
+      JWT_SECRET: secret
     volumes:
       - ./backend:/app
     command: ["npm", "run", "dev"]
@@ -44,4 +45,4 @@ services:
     command: ["npm", "run", "host"]
 
 volumes:
-  postgres_data:
+  postgres_data: 

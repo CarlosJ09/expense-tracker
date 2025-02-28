@@ -10,7 +10,10 @@ const generateToken = (payload: any) => {
 };
 
 const verifyToken = (token: string) => {
-  const user = verify(token, "secret");
+  if (!JWT_SECRET) return;
+
+  const user = verify(token, JWT_SECRET);
+
   return user;
 };
 
