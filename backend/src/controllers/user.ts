@@ -22,10 +22,14 @@ const getUsersController = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-const updateUserController = ({ body, params }: Request, res: Response, next: NextFunction) => {
+const updateUserController = async (
+  { body, params }: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { id } = params;
-    const user = updateUser(id, body);
+    const user = await updateUser(id, body);
 
     res.send(user);
   } catch (error) {
@@ -33,12 +37,12 @@ const updateUserController = ({ body, params }: Request, res: Response, next: Ne
   }
 };
 
-const deleteUserController = (req: Request, res: Response, next: NextFunction) => {
+const deleteUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    deleteUser(id);
+    await deleteUser(id);
 
-    res.send({ message: "User deleted" });
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }

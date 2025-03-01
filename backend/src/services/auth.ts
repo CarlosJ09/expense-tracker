@@ -1,11 +1,12 @@
-import { User } from "@prisma/client";
 import prisma from "myconfig/prisma/client";
 import { encryptPassword, comparePasswords } from "@/utils/bcrypt";
 import { generateToken } from "@/utils/jwt";
-import { LoginRequest, LoginResponse } from "@/dtos/auth.dto";
-import AppError from "@/utils/error-handler";
+import { LoginRequestDto, LoginResponseDto } from "@/dtos/auth/login.dto";
+import { toUserResponseDto } from "@/dtos/user/user.dto";
+import { RegisterRequestDto, RegisterResponseDto } from "@/dtos/auth/register.dto";
+import AppError from "@/utils/app-error";
 
-const registerNewUser = async (payload: User) => {
+const registerUserService = async (payload: RegisterRequestDto): Promise<RegisterResponseDto> => {
   const userAlreadyExists = await prisma.user.findUnique({
     where: { email: payload.email },
   });
@@ -16,17 +17,30 @@ const registerNewUser = async (payload: User) => {
 
   const hashedPassword = await encryptPassword(payload.password);
   payload.password = hashedPassword;
+  const user = await prisma.user.create({ data: payload });
 
-  return await prisma.user.create({ data: payload });
+  const token = generateToken({ id: user.id });
+
+  if (!token) {
+    throw new AppError("Error creating user", 500);
+  }
+
+  return {
+    token: token,
+    user: toUserResponseDto(user),
+  };
 };
 
-const login = async ({ email, password }: LoginRequest): Promise<LoginResponse> => {
+const loginUserService = async ({
+  email,
+  password,
+}: LoginRequestDto): Promise<LoginResponseDto> => {
   const user = await prisma.user.findUnique({
     where: { email },
   });
 
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("Email or password is incorrect", 401);
   }
 
   const isPasswordValid = await comparePasswords(password, user.password);
@@ -43,12 +57,8 @@ const login = async ({ email, password }: LoginRequest): Promise<LoginResponse> 
 
   return {
     token,
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    },
+    user: toUserResponseDto(user),
   };
 };
 
-export { registerNewUser, login };
+export { registerUserService, loginUserService };

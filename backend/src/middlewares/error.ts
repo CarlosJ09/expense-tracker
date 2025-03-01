@@ -1,14 +1,22 @@
 import { Request, Response, NextFunction } from "express";
+import AppError from "@/utils/app-error";
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
+const errorHandler = (
+  err: Error | AppError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  console.error("ERROR:", err);
 
-  res.status(500).json({
-    message: err.message || "Internal Server Error",
-    error: process.env.NODE_ENV === "development" ? err : undefined,
+  const statusCode = err instanceof AppError ? err.statusCode : 500;
+  const message = err.message || "Internal Server Error";
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+    stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 };
 
 export default errorHandler;
-
-

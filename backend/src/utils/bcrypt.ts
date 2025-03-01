@@ -9,5 +9,5 @@ const comparePasswords = async (password: string, hashedPassword: string) => {
   const isPasswordValid = await compare(password, hashedPassword);
   return isPasswordValid;
 };
- 
+
 export { encryptPassword, comparePasswords };
