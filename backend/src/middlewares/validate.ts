@@ -1,0 +1,25 @@
+// src/middlewares/validate.ts
+import { Request, Response, NextFunction } from "express";
+import { AnyZodObject, ZodError } from "zod";
+import AppError from "@/utils/app-error";
+
+export const validate =
+  (schema: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await schema.parseAsync({
+        body: req.body,
+        query: req.query,
+        params: req.params,
+      });
+      return next();
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const formattedErrors = error.errors.map((err) => ({
+          path: err.path.join("."),
+          message: err.message,
+        }));
+        return next(new AppError("Validation failed", 400, formattedErrors));
+      }
+      return next(error);
+    }
+  };

@@ -15,6 +15,7 @@ const errorHandler = (
   res.status(statusCode).json({
     success: false,
     message,
+    errors: err instanceof AppError ? err.errors : undefined,
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 };
