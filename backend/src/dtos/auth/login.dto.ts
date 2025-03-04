@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { userResponseSchema } from "@/dtos/user/user.dto";
+import { userResponseSchema } from "@/dtos/user.dto";
 
 export const loginSchema = z.object({
   body: z.object({

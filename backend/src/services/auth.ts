@@ -2,7 +2,7 @@ import prisma from "myconfig/prisma/client";
 import { encryptPassword, comparePasswords } from "@/utils/bcrypt";
 import { generateToken } from "@/utils/jwt";
 import { LoginRequestDto, LoginResponseDto } from "@/dtos/auth/login.dto";
-import { toUserResponseDto } from "@/dtos/user/user.dto";
+import { toUserResponseDto } from "@/dtos/user.dto";
 import { RegisterRequestDto, RegisterResponseDto } from "@/dtos/auth/register.dto";
 import AppError from "@/utils/app-error";
 
