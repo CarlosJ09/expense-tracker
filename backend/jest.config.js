@@ -1,7 +1,10 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
+  preset: "ts-jest",
   testEnvironment: "node",
-  transform: {
-    "^.+.tsx?$": ["ts-jest", {}],
+  clearMocks: true,
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "^myconfig/prisma/(.*)$": "<rootDir>/prisma/$1",
   },
+  setupFilesAfterEnv: ["<rootDir>/src/tests/mocks/prisma.ts"],
 };
