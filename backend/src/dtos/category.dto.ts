@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const createCategorySchema = z.object({
   name: z.string().min(2, { message: "Category name must be at least 2 characters long" }),
+  userId: z.string().uuid({ message: "Invalid user ID format" }),
 });
 
 export type CreateCategoryDto = z.infer<typeof createCategorySchema>;
@@ -11,6 +12,7 @@ export const updateCategorySchema = z.object({
     .string()
     .min(2, { message: "Category name must be at least 2 characters long" })
     .optional(),
+  userId: z.string().uuid({ message: "Invalid user ID format" }),
 });
 
 export type UpdateCategoryDto = z.infer<typeof updateCategorySchema>;

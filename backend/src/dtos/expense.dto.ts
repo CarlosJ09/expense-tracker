@@ -5,6 +5,7 @@ export const createExpenseSchema = z.object({
   description: z.string().optional(),
   date: z.string().or(z.date()).pipe(z.coerce.date()).optional(),
   categoryId: z.string().uuid({ message: "Invalid category ID format" }),
+  userId: z.string().uuid(),
 });
 
 export type CreateExpenseDto = z.infer<typeof createExpenseSchema>;
@@ -14,6 +15,7 @@ export const updateExpenseSchema = z.object({
   description: z.string().optional(),
   date: z.string().or(z.date()).pipe(z.coerce.date()).optional(),
   categoryId: z.string().uuid({ message: "Invalid category ID format" }).optional(),
+  userId: z.string().uuid(),
 });
 
 export type UpdateExpenseDto = z.infer<typeof updateExpenseSchema>;

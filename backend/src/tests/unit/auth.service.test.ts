@@ -21,12 +21,6 @@ describe("Auth Service", () => {
     updatedAt: new Date(),
   };
 
-  const userResponseDto = {
-    id: testingUser.id,
-    name: testingUser.name,
-    email: testingUser.email,
-  };
-
   const mockToken = "fake.jwt.token";
 
   beforeEach(() => {
@@ -36,7 +30,6 @@ describe("Auth Service", () => {
   });
 
   test("should login a user successfully", async () => {
-    // Arrange
     const loginPayload = {
       email: testingUser.email,
       password: "password123",

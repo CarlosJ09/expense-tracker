@@ -16,7 +16,7 @@ export const updateUserSchema = z.object({
   email: z.string().email({ message: "Invalid email address format" }).optional(),
 });
 
-export type updateUserRequestDto = z.infer<typeof updateUserSchema>;
+export type UpdateUserRequestDto = z.infer<typeof updateUserSchema>;
 
 export const toUserResponseDto = (user: User): UserResponseDto => {
   const { password, ...userWithoutPassword } = user;

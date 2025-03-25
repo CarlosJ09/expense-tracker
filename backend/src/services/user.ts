@@ -1,6 +1,6 @@
 import prisma from "myconfig/prisma/client";
 import AppError from "@/utils/app-error";
-import { updateUserRequestDto } from "@/dtos/user.dto";
+import { UpdateUserRequestDto } from "@/dtos/user.dto";
 
 const getUser = async (id: string) => {
   const user = await prisma.user.findUnique({
@@ -17,7 +17,7 @@ const getUsers = async () => {
   return users;
 };
 
-const updateUser = async (id: string, data: updateUserRequestDto) => {
+const updateUser = async (id: string, data: UpdateUserRequestDto) => {
   try {
     return await prisma.user.update({ where: { id }, data });
   } catch (error: any) {
